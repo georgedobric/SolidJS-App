@@ -10,6 +10,7 @@ function App() {
   const [jobs,setJobs] = createSignal([{id: 1, title: "1st Job", tree:[branch()]}]);
   const [inputValue, setInputValue] = createSignal('');
   const [searchInputValue, setSearchInputValue] = createSignal('');
+  const [currentJob, setCurrentJob] = createSignal(1);
 
   //  Handle main input, creating a new branch which will appear on the screen
   const handleKeyDown = (e) => {
@@ -21,14 +22,10 @@ function App() {
         subject: inputValue()
       }
       setBranch((prevArray) => [...prevArray, newBranch]);
-      console.log(branch());
 
       const updatedJobs = jobs();
-      console.log(updatedJobs[0].tree);
       updatedJobs[0].tree[0] = [...updatedJobs[0].tree[0], newBranch];
       setJobs(updatedJobs);
-    //   // setJobs((prevArray) => [...prevArray, ])
-      console.log(jobs());
 
       // Clear the input value
       setInputValue('');
@@ -50,6 +47,24 @@ function App() {
     setAddButtonStyle("addButton");
   }
 
+  //  Add a new job
+  const handleAddJob = () => {
+    let title = prompt("Project Title: ");
+    let branchSubject = prompt("First thing: ")
+    let branch = [{id: [1,1], hierarchy: [1], subject: branchSubject}]
+    const newJob = {
+      id: jobs().length + 1, 
+      title: title,
+      tree: [branch]
+    };
+    let updatedJobs = jobs();
+    updatedJobs = [...updatedJobs, newJob];
+    setJobs(updatedJobs);
+    console.log(jobs());
+    setCurrentJob(newJob.id);
+    console.log(currentJob());
+  }
+
   return (
     <div>
 
@@ -61,15 +76,50 @@ function App() {
 
       <button class={addButtonStyle()}
         onMouseDown={handleMouseDown}
-        onMouseUp={handleMouseUp}>➕</button>
+        onMouseUp={handleMouseUp}
+        onClick={handleAddJob}>➕</button>
 
       <div class="nodeContainer">
 
-        <For each={branch()}>{(branch, i) =>
+
+      {/* <Switch>
+        <Match when={condition1}>
+          <p>Outcome 1</p>
+        </Match>
+      </Switch> */}
+
+        {/* <Show
+          when={loggedIn()}
+          fallback={<button onClick={toggle}>Log in</button>}
+        >
+          <button onClick={toggle}>Log out</button>
+        </Show> */}
+
+{/* <div class="node">currentJob: {currentJob()}</div>
+<div class="node">jobID: {jobs()[0].id}</div> */}
+        <For each={jobs()}>{(job, i) =>
+        
+          <li>
+            {/* {job.id == currentJob &&
+            <div class="node">{job.title}</div>
+            }    */}
+
+            {/* <div class="node">{job.id}</div> */}
+
+
+            {currentJob() == job.id &&
+            <For each={job.tree[0]}>{(branch, j) =>
+              // <div class="node">asda</div>
+              <div class="node">{branch.subject}</div>
+            }</For>
+          }
+          </li>
+        }</For>
+        {/* <For each={branch()}>{(branch, i) =>
           <li>
               <div class="node">{branch.subject}</div>
           </li>
-        }</For>
+        }</For> */}
 
         <input
           class="searchContainer"
