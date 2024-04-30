@@ -15,16 +15,15 @@ function App() {
   //  Handle main input, creating a new branch which will appear on the screen
   const handleKeyDown = (e) => {
     if (e.key === 'Enter') {
-      let branchIndex = branch().length + 1;
-      let newBranch = {
-        id: [1,branchIndex], //all but last number should be currHierarchy
-        hierarchy: [1],
-        subject: inputValue()
-      }
-      setBranch((prevArray) => [...prevArray, newBranch]);
 
+      let newBranch = {
+        id: [],
+        hierarchy: [],
+        subject: inputValue()
+      };
+      let updatedTree = [...jobs()[currentJob()-1].tree[0], newBranch];
       const updatedJobs = jobs();
-      updatedJobs[0].tree[0] = [...updatedJobs[0].tree[0], newBranch];
+      updatedJobs[currentJob()-1].tree[0] = updatedTree;
       setJobs(updatedJobs);
 
       // Clear the input value
@@ -32,17 +31,11 @@ function App() {
     }
   }
 
-  // const [addState, setAddState] = createSignal(false);
-  // let addButtonStyle = "addButton";
+  //  Add Job Button Styling
   const [addButtonStyle, setAddButtonStyle] = createSignal("addButton");
   const handleMouseDown = () => {
-    // if (addState == false)
-    //   setAddState(true);
-    // else 
-    //   setAddState(false);
     setAddButtonStyle("addButtonPressed");
   }
-
   const handleMouseUp = () => {
     setAddButtonStyle("addButton");
   }
