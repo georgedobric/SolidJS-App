@@ -11,6 +11,7 @@ function App() {
   const [inputValue, setInputValue] = createSignal('');
   const [searchInputValue, setSearchInputValue] = createSignal('');
   const [currentJob, setCurrentJob] = createSignal(1);
+  const [currentHierarchy, setCurrentHierarchy] = createSignal([1]);
 
   //  Handle main input, creating a new branch which will appear on the screen
   const handleKeyDown = (e) => {
@@ -28,6 +29,9 @@ function App() {
 
       // Clear the input value
       setInputValue('');
+
+      // update the DOM
+      setBranch(jobs()[currentJob()-1].tree[0]);
     }
   }
 
@@ -56,6 +60,9 @@ function App() {
     console.log(jobs());
     setCurrentJob(newJob.id);
     console.log(currentJob());
+
+    // update the DOM
+    setBranch(jobs()[currentJob()-1].tree[0]);
   }
 
   return (
@@ -74,45 +81,16 @@ function App() {
 
       <div class="nodeContainer">
 
-
-      {/* <Switch>
-        <Match when={condition1}>
-          <p>Outcome 1</p>
-        </Match>
-      </Switch> */}
-
-        {/* <Show
-          when={loggedIn()}
-          fallback={<button onClick={toggle}>Log in</button>}
-        >
-          <button onClick={toggle}>Log out</button>
-        </Show> */}
-
-{/* <div class="node">currentJob: {currentJob()}</div>
-<div class="node">jobID: {jobs()[0].id}</div> */}
         <For each={jobs()}>{(job, i) =>
         
           <li>
-            {/* {job.id == currentJob &&
-            <div class="node">{job.title}</div>
-            }    */}
-
-            {/* <div class="node">{job.id}</div> */}
-
-
             {currentJob() == job.id &&
-            <For each={job.tree[0]}>{(branch, j) =>
-              // <div class="node">asda</div>
+            <For each={branch()}>{(branch, j) =>
               <div class="node">{branch.subject}</div>
             }</For>
           }
           </li>
         }</For>
-        {/* <For each={branch()}>{(branch, i) =>
-          <li>
-              <div class="node">{branch.subject}</div>
-          </li>
-        }</For> */}
 
         <input
           class="searchContainer"
