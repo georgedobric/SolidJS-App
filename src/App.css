@@ -211,3 +211,6 @@ h1 {
     height: 100vh;
     border:5px solid black;
 }
+.list{
+    width:10vw;
+}

@@ -65,6 +65,15 @@ function App() {
     setBranch(jobs()[currentJob()-1].tree[0]);
   }
 
+  const handleMouseEnter = (id) => {
+    // console.log(id)
+    console.log('ENTER');
+  }
+  const handleMouseLeave = (id) => {
+    // console.log(id)
+    console.log('LEAVE');
+  }
+
   return (
     <div>
 
@@ -83,10 +92,15 @@ function App() {
 
         <For each={jobs()}>{(job, i) =>
         
-          <li>
+          <li
+          // onMouseEnter={handleMouseEnter(job.tree[i].id)}
+          class="list"
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}>
             {currentJob() == job.id &&
             <For each={branch()}>{(branch, j) =>
-              <div class="node">{branch.subject}</div>
+              <div class="node"
+              >{branch.subject}</div>
             }</For>
           }
           </li>
