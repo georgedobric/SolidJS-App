@@ -16,7 +16,6 @@ function App() {
   const [inputValue, setInputValue] = createSignal("");
   const [searchInputValue, setSearchInputValue] = createSignal("");
   const [currentJob, setCurrentJob] = createSignal(1);
-  const [currentHierarchy, setCurrentHierarchy] = createSignal([1]);
   const [mouseOverID, setMouseOverID] = createSignal();
   const [hierarchy, setHierarchy] = createSignal([1]);
   const windowScroll = createScrollPosition();
@@ -84,6 +83,7 @@ function App() {
   const handleMouseLeave = () => {
     setMouseOverID();
     setBranchHover(false);
+    setShiftComplete(false);
   };
 
   const [shiftComplete, setShiftComplete] = createSignal(false);
@@ -97,7 +97,9 @@ function App() {
         setHierarchy(mouseOverID);
       } else if (wDelta() == "down" && branchHover() == true) {
         console.log("scroll down");
-        setShiftComplete(true);
+        if (hierarchy().length > 2)
+          setHierarchy(hierarchy().slice(0,-1));
+          setShiftComplete(true);
       }
       setWDelta("");
     }
