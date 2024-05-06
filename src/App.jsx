@@ -23,11 +23,22 @@ function App() {
   console.log(hierarchy().toString());
   console.log(hierarchy().toString() == branch()[0].hierarchy.toString());
 
+  //  Identify all the branches of the current hierarchy
+  let hierarchyBranches;
+
   //  Handle main input, creating a new branch which will appear on the screen
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
+      hierarchyBranches = jobs()[currentJob()-1].tree[0].filter(
+        (obj) => obj.hierarchy.join("") === hierarchy().join("")
+      );
+
+      console.log("hierarchyBranches:");
+      console.log(hierarchyBranches);
+      console.log("hierarchy:");
+      console.log(hierarchy());
       let newBranch = {
-        id: [...hierarchy(), jobs()[currentJob() - 1].tree[0].length],
+        id: [...hierarchy(), hierarchyBranches.length + 1],
         hierarchy: hierarchy(),
         subject: inputValue(),
       };
@@ -95,11 +106,15 @@ function App() {
         console.log(mouseOverID());
         setShiftComplete(true);
         setHierarchy(mouseOverID);
+        console.log(hierarchy());
+        console.log(jobs());
       } else if (wDelta() == "down" && branchHover() == true) {
         console.log("scroll down");
-        if (hierarchy().length > 2)
+        if (hierarchy().length > 1)
           setHierarchy(hierarchy().slice(0,-1));
           setShiftComplete(true);
+          console.log(hierarchy());
+          console.log(jobs());
       }
       setWDelta("");
     }
